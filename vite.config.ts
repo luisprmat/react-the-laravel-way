@@ -1,6 +1,8 @@
 import { wayfinder } from '@laravel/vite-plugin-wayfinder';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+// @ts-ignore
+import i18n from 'laravel-react-internationalization/vite';
 import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
 
@@ -16,6 +18,7 @@ export default defineConfig({
                 plugins: ['babel-plugin-react-compiler'],
             },
         }),
+        i18n(),
         tailwindcss(),
         wayfinder({
             formVariants: true,

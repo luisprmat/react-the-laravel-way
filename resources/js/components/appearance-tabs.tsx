@@ -1,5 +1,6 @@
 import { Appearance, useAppearance } from '@/hooks/use-appearance';
 import { cn } from '@/lib/utils';
+import { useLaravelReactI18n } from 'laravel-react-internationalization';
 import { LucideIcon, Monitor, Moon, Sun } from 'lucide-react';
 import { HTMLAttributes } from 'react';
 
@@ -14,6 +15,8 @@ export default function AppearanceToggleTab({
         { value: 'dark', icon: Moon, label: 'Dark' },
         { value: 'system', icon: Monitor, label: 'System' },
     ];
+
+    const { t } = useLaravelReactI18n();
 
     return (
         <div
@@ -35,7 +38,7 @@ export default function AppearanceToggleTab({
                     )}
                 >
                     <Icon className="-ml-1 h-4 w-4" />
-                    <span className="ml-1.5 text-sm">{label}</span>
+                    <span className="ml-1.5 text-sm">{t(label)}</span>
                 </button>
             ))}
         </div>

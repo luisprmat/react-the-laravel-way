@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
 import { Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-internationalization';
 import { Fragment } from 'react';
 
 export function Breadcrumbs({
@@ -15,6 +16,7 @@ export function Breadcrumbs({
 }: {
     breadcrumbs: BreadcrumbItemType[];
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <>
             {breadcrumbs.length > 0 && (
@@ -27,12 +29,12 @@ export function Breadcrumbs({
                                     <BreadcrumbItem>
                                         {isLast ? (
                                             <BreadcrumbPage>
-                                                {item.title}
+                                                {t(item.title)}
                                             </BreadcrumbPage>
                                         ) : (
                                             <BreadcrumbLink asChild>
                                                 <Link href={item.href}>
-                                                    {item.title}
+                                                    {t(item.title)}
                                                 </Link>
                                             </BreadcrumbLink>
                                         )}

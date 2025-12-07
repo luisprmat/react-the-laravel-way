@@ -17,6 +17,7 @@ import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
 import { confirm } from '@/routes/two-factor';
 import { Form } from '@inertiajs/react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
+import { useLaravelReactI18n } from 'laravel-react-internationalization';
 import { Check, Copy, ScanLine } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import AlertError from './alert-error';
@@ -64,6 +65,8 @@ function TwoFactorSetupStep({
     const [copiedText, copy] = useClipboard();
     const IconComponent = copiedText === manualSetupKey ? Check : Copy;
 
+    const { t } = useLaravelReactI18n();
+
     return (
         <>
             {errors?.length ? (
@@ -96,7 +99,7 @@ function TwoFactorSetupStep({
                     <div className="relative flex w-full items-center justify-center">
                         <div className="absolute inset-0 top-1/2 h-px w-full bg-border" />
                         <span className="relative bg-card px-2 py-1">
-                            or, enter the code manually
+                            {t('or, enter the code manually')}
                         </span>
                     </div>
 
@@ -145,6 +148,8 @@ function TwoFactorVerificationStep({
             pinInputContainerRef.current?.querySelector('input')?.focus();
         }, 0);
     }, []);
+
+    const { t } = useLaravelReactI18n();
 
     return (
         <Form
@@ -201,7 +206,7 @@ function TwoFactorVerificationStep({
                                 onClick={onBack}
                                 disabled={processing}
                             >
-                                Back
+                                {t('Back')}
                             </Button>
                             <Button
                                 type="submit"
@@ -210,7 +215,7 @@ function TwoFactorVerificationStep({
                                     processing || code.length < OTP_MAX_LENGTH
                                 }
                             >
-                                Confirm
+                                {t('Confirm')}
                             </Button>
                         </div>
                     </div>
@@ -264,7 +269,7 @@ export default function TwoFactorSetupModal({
             return {
                 title: 'Verify Authentication Code',
                 description:
-                    'Enter the 6-digit code from your authenticator app',
+                    'Enter the 6-digit code from your authenticator app.',
                 buttonText: 'Continue',
             };
         }
@@ -272,7 +277,7 @@ export default function TwoFactorSetupModal({
         return {
             title: 'Enable Two-Factor Authentication',
             description:
-                'To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app',
+                'To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app.',
             buttonText: 'Continue',
         };
     }, [twoFactorEnabled, showVerificationStep]);
@@ -306,14 +311,16 @@ export default function TwoFactorSetupModal({
         onClose();
     }, [onClose, resetModalState]);
 
+    const { t } = useLaravelReactI18n();
+
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader className="flex items-center justify-center">
                     <GridScanIcon />
-                    <DialogTitle>{modalConfig.title}</DialogTitle>
+                    <DialogTitle>{t(modalConfig.title)}</DialogTitle>
                     <DialogDescription className="text-center">
-                        {modalConfig.description}
+                        {t(modalConfig.description)}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -327,7 +334,7 @@ export default function TwoFactorSetupModal({
                         <TwoFactorSetupStep
                             qrCodeSvg={qrCodeSvg}
                             manualSetupKey={manualSetupKey}
-                            buttonText={modalConfig.buttonText}
+                            buttonText={t(modalConfig.buttonText)}
                             onNextStep={handleModalNextStep}
                             errors={errors}
                         />

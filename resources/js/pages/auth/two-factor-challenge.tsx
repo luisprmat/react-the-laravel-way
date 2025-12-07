@@ -11,11 +11,14 @@ import AuthLayout from '@/layouts/auth-layout';
 import { store } from '@/routes/two-factor/login';
 import { Form, Head } from '@inertiajs/react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
+import { useLaravelReactI18n } from 'laravel-react-internationalization';
 import { useMemo, useState } from 'react';
 
 export default function TwoFactorChallenge() {
     const [showRecoveryInput, setShowRecoveryInput] = useState<boolean>(false);
     const [code, setCode] = useState<string>('');
+
+    const { t } = useLaravelReactI18n();
 
     const authConfigContent = useMemo<{
         title: string;
@@ -47,10 +50,10 @@ export default function TwoFactorChallenge() {
 
     return (
         <AuthLayout
-            title={authConfigContent.title}
-            description={authConfigContent.description}
+            title={t(authConfigContent.title)}
+            description={t(authConfigContent.description)}
         >
-            <Head title="Two-Factor Authentication" />
+            <Head title={t('Two-Factor Authentication')} />
 
             <div className="space-y-6">
                 <Form
@@ -66,7 +69,7 @@ export default function TwoFactorChallenge() {
                                     <Input
                                         name="recovery_code"
                                         type="text"
-                                        placeholder="Enter recovery code"
+                                        placeholder={t('Enter recovery code')}
                                         autoFocus={showRecoveryInput}
                                         required
                                     />
@@ -107,11 +110,11 @@ export default function TwoFactorChallenge() {
                                 className="w-full"
                                 disabled={processing}
                             >
-                                Continue
+                                {t('Continue')}
                             </Button>
 
                             <div className="text-center text-sm text-muted-foreground">
-                                <span>or you can </span>
+                                <span>{t('or you can')} </span>
                                 <button
                                     type="button"
                                     className="cursor-pointer text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
@@ -119,7 +122,7 @@ export default function TwoFactorChallenge() {
                                         toggleRecoveryMode(clearErrors)
                                     }
                                 >
-                                    {authConfigContent.toggleText}
+                                    {t(authConfigContent.toggleText)}
                                 </button>
                             </div>
                         </>

@@ -32,6 +32,7 @@ import { cn, isSameUrl, resolveUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-internationalization';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
@@ -68,6 +69,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
     const getInitials = useInitials();
+    const { t } = useLaravelReactI18n();
     return (
         <>
             <div className="border-b border-sidebar-border/80">
@@ -89,7 +91,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 className="flex h-full w-64 flex-col items-stretch justify-between bg-sidebar"
                             >
                                 <SheetTitle className="sr-only">
-                                    Navigation Menu
+                                    {t('Navigation Menu')}
                                 </SheetTitle>
                                 <SheetHeader className="flex justify-start text-left">
                                     <AppLogoIcon className="h-6 w-6 fill-current text-black dark:text-white" />
@@ -109,7 +111,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                             className="h-5 w-5"
                                                         />
                                                     )}
-                                                    <span>{item.title}</span>
+                                                    <span>{t(item.title)}</span>
                                                 </Link>
                                             ))}
                                         </div>
@@ -129,7 +131,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                             className="h-5 w-5"
                                                         />
                                                     )}
-                                                    <span>{item.title}</span>
+                                                    <span>{t(item.title)}</span>
                                                 </a>
                                             ))}
                                         </div>
@@ -173,7 +175,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                     className="mr-2 h-4 w-4"
                                                 />
                                             )}
-                                            {item.title}
+                                            {t(item.title)}
                                         </Link>
                                         {isSameUrl(page.url, item.href) && (
                                             <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
@@ -208,7 +210,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                     className="group ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md bg-transparent p-0 text-sm font-medium text-accent-foreground ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
                                                 >
                                                     <span className="sr-only">
-                                                        {item.title}
+                                                        {t(item.title)}
                                                     </span>
                                                     {item.icon && (
                                                         <Icon
@@ -219,7 +221,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                 </a>
                                             </TooltipTrigger>
                                             <TooltipContent>
-                                                <p>{item.title}</p>
+                                                <p>{t(item.title)}</p>
                                             </TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
