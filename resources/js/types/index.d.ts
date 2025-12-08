@@ -41,3 +41,18 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Puppy {
+    id: number;
+    name: string;
+    trait: string;
+    imageUrl: string;
+    likedBy: User['id'][];
+}
+
+export type ApiError = {
+    error: boolean;
+    message: string;
+    details: string;
+    code: string;
+};
