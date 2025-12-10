@@ -19,7 +19,10 @@ export default function App({ puppies }: { puppies: Puppy[] }) {
                 <Header />
                 <ul className="mt-4 flex flex-wrap gap-4">
                     {puppies.map((puppy) => (
-                        <li className="flex gap-2 bg-white p-6 ring ring-black/10">
+                        <li
+                            key={puppy.id}
+                            className="flex gap-2 bg-white p-6 ring ring-black/10"
+                        >
                             <img
                                 src={'/storage/' + puppy.image_url}
                                 alt={puppy.name}
