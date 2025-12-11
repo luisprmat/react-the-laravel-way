@@ -47,7 +47,8 @@ export interface Puppy {
     name: string;
     trait: string;
     imageUrl: string;
-    likedBy: User['id'][];
+    user: Pick<User, 'id' | 'name'>;
+    // likedBy: User['id'][];
 }
 
 export type ApiError = {
