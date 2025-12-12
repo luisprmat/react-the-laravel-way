@@ -7,7 +7,7 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('welcome', [
-        'puppies' => PuppyResource::collection(Puppy::with('user')->get()),
+        'puppies' => PuppyResource::collection(Puppy::with(['user', 'likedBy'])->get()),
     ]);
 })->name('home');
 
