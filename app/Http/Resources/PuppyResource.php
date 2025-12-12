@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class PuppyResource extends JsonResource
 {
@@ -18,7 +19,7 @@ class PuppyResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'trait' => $this->trait,
-            'imageUrl' => $this->image_url,
+            'imageUrl' => Storage::url($this->image_url),
             'likedBy' => UserResource::collection($this->whenLoaded('likedBy'))->pluck('id'),
             'user' => UserResource::make($this->whenLoaded('user')),
         ];
