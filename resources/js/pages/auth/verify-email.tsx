@@ -9,42 +9,39 @@ import { Form, Head } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-internationalization';
 
 export default function VerifyEmail({ status }: { status?: string }) {
-    const { t } = useLaravelReactI18n();
+  const { t } = useLaravelReactI18n();
 
-    return (
-        <AuthLayout
-            title={t('Verify email')}
-            description={t(
-                'Please verify your email address by clicking on the link we just emailed to you.',
-            )}
-        >
-            <Head title={t('Email verification')} />
+  return (
+    <AuthLayout
+      title={t('Verify email')}
+      description={t(
+        'Please verify your email address by clicking on the link we just emailed to you.',
+      )}
+    >
+      <Head title={t('Email verification')} />
 
-            {status === 'verification-link-sent' && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    {t(
-                        'A new verification link has been sent to the email address you provided during registration.',
-                    )}
-                </div>
-            )}
+      {status === 'verification-link-sent' && (
+        <div className="mb-4 text-center text-sm font-medium text-green-600">
+          {t(
+            'A new verification link has been sent to the email address you provided during registration.',
+          )}
+        </div>
+      )}
 
-            <Form {...send.form()} className="space-y-6 text-center">
-                {({ processing }) => (
-                    <>
-                        <Button disabled={processing} variant="secondary">
-                            {processing && <Spinner />}
-                            {t('Resend verification email')}
-                        </Button>
+      <Form {...send.form()} className="space-y-6 text-center">
+        {({ processing }) => (
+          <>
+            <Button disabled={processing} variant="secondary">
+              {processing && <Spinner />}
+              {t('Resend verification email')}
+            </Button>
 
-                        <TextLink
-                            href={logout()}
-                            className="mx-auto block text-sm"
-                        >
-                            {t('Log out')}
-                        </TextLink>
-                    </>
-                )}
-            </Form>
-        </AuthLayout>
-    );
+            <TextLink href={logout()} className="mx-auto block text-sm">
+              {t('Log out')}
+            </TextLink>
+          </>
+        )}
+      </Form>
+    </AuthLayout>
+  );
 }

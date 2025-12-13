@@ -1,15 +1,15 @@
-import { Dispatch, SetStateAction } from "react"
-import { type Puppy, type PuppyCardProps } from "../types"
-import { LikeToggle } from "./LikeToggle"
+import { Dispatch, SetStateAction } from 'react';
+import { type Puppy, type PuppyCardProps } from '../types';
+import { LikeToggle } from './LikeToggle';
 
 export function PuppiesList({
   searchQuery,
   puppies,
   setPuppies,
 }: {
-  searchQuery: string
-  puppies: Puppy[]
-  setPuppies: Dispatch<SetStateAction<Puppy[]>>
+  searchQuery: string;
+  puppies: Puppy[];
+  setPuppies: Dispatch<SetStateAction<Puppy[]>>;
 }) {
   return (
     <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -21,7 +21,7 @@ export function PuppiesList({
           <PuppyCard key={puppy.id} puppy={puppy} setPuppies={setPuppies} />
         ))}
     </ul>
-  )
+  );
 }
 
 function PuppyCard({ puppy, setPuppies }: PuppyCardProps) {
@@ -41,5 +41,5 @@ function PuppyCard({ puppy, setPuppies }: PuppyCardProps) {
         <LikeToggle puppy={puppy} setPuppies={setPuppies} />
       </div>
     </li>
-  )
+  );
 }

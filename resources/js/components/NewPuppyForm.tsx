@@ -79,7 +79,7 @@ function SubmitButton() {
       disabled={status.pending}
     >
       {status.pending
-        ? `Adding ${status?.data?.get('name') || t('puppy')} ...`
+        ? `${t('Adding')} ${status?.data?.get('name') || t('puppy')} ...`
         : t('Add :name', { name: t('puppy') })}
     </button>
   );
