@@ -25,7 +25,7 @@ export function Header() {
                 {/* Auth Actions */}
                 {auth.user ? (
                     <div className="flex items-center gap-4">
-                        <p>Hi, {auth.user.name}</p>
+                        <p>{t('Hi, :name', { name: auth.user.name })}</p>
                         <Button asChild>
                             <Link href={logout()}>{t('Log out')}</Link>
                         </Button>
@@ -39,10 +39,12 @@ export function Header() {
             {/* Hero copy */}
             <div className="mt-6">
                 <h1 className="text-lg font-bold">
-                    We've got the best puppies!
+                    {t("We've got the best puppies!")}
                 </h1>
                 <p className="text-slate-600">
-                    Don't take our word — let the pictures do the talking :)
+                    {t(
+                        "Don't take our word — let the pictures do the talking :)",
+                    )}
                 </p>
                 {!auth.user && (
                     <p className="mt-4 text-slate-600">
@@ -52,7 +54,9 @@ export function Header() {
                         >
                             {t('Sign in')}
                         </Link>{' '}
-                        to keep track of your favorite puppies and add new ones!
+                        {t(
+                            'to keep track of your favorite puppies and add new ones!',
+                        )}
                     </p>
                 )}
             </div>

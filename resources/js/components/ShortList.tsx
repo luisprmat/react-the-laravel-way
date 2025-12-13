@@ -1,19 +1,21 @@
-import { Heart, LoaderCircle, X } from "lucide-react"
-import { Dispatch, SetStateAction, useState } from "react"
-import { toggleLikedStatus } from "../queries"
-import { Puppy } from "../types"
+import { useLaravelReactI18n } from 'laravel-react-internationalization';
+import { Heart, LoaderCircle, X } from 'lucide-react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { toggleLikedStatus } from '../queries';
+import { Puppy } from '../types';
 
 export function Shortlist({
   puppies,
   setPuppies,
 }: {
-  puppies: Puppy[]
-  setPuppies: Dispatch<SetStateAction<Puppy[]>>
+  puppies: Puppy[];
+  setPuppies: Dispatch<SetStateAction<Puppy[]>>;
 }) {
+  const { t } = useLaravelReactI18n();
   return (
     <div>
       <h2 className="flex items-center gap-2 font-medium">
-        <span>Your shortlist</span>
+        <span>{t('Your shortlist')}</span>
         <Heart className="size-6 fill-pink-500 stroke-pink-500" />
       </h2>
       <ul className="mt-4 flex flex-wrap gap-4">
@@ -37,28 +39,28 @@ export function Shortlist({
           ))}
       </ul>
     </div>
-  )
+  );
 }
 
 function DeleteButton({
   id,
   setPuppies,
 }: {
-  id: Puppy["id"]
-  setPuppies: Dispatch<SetStateAction<Puppy[]>>
+  id: Puppy['id'];
+  setPuppies: Dispatch<SetStateAction<Puppy[]>>;
 }) {
-  const [pending, setPending] = useState<boolean>(false)
+  const [pending, setPending] = useState<boolean>(false);
   return (
     <button
       onClick={async () => {
-        setPending(true)
-        const updatedPuppy = await toggleLikedStatus(id)
+        setPending(true);
+        const updatedPuppy = await toggleLikedStatus(id);
         setPuppies((prevPups) =>
           prevPups.map((existingPuppy) =>
             existingPuppy.id === updatedPuppy.id ? updatedPuppy : existingPuppy,
           ),
-        )
-        setPending(false)
+        );
+        setPending(false);
       }}
       className="group h-full border-l border-slate-100 px-2 hover:bg-slate-100"
       disabled={pending}
@@ -69,5 +71,5 @@ function DeleteButton({
         <X className="size-4 stroke-slate-400 group-hover:stroke-red-400" />
       )}
     </button>
-  )
+  );
 }
