@@ -7,7 +7,8 @@ import { Search } from '@/components/Search';
 import { Shortlist } from '@/components/ShortList';
 import { useState } from 'react';
 
-import { ApiError, Puppy } from '@/types';
+import { Puppy, SharedData } from '@/types';
+import { usePage } from '@inertiajs/react';
 
 export default function App({ puppies }: { puppies: Puppy[] }) {
     return (
@@ -23,6 +24,7 @@ export default function App({ puppies }: { puppies: Puppy[] }) {
 function Main({ pups }: { pups: Puppy[] }) {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [puppies, setPuppies] = useState<Puppy[]>(pups);
+    const { auth } = usePage<SharedData>().props;
 
     return (
         <main>
@@ -31,7 +33,9 @@ function Main({ pups }: { pups: Puppy[] }) {
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
                 />
-                <Shortlist puppies={puppies} setPuppies={setPuppies} />
+                {auth.user && (
+                    <Shortlist puppies={puppies} setPuppies={setPuppies} />
+                )}
             </div>
             <PuppiesList
                 searchQuery={searchQuery}
@@ -40,15 +44,5 @@ function Main({ pups }: { pups: Puppy[] }) {
             />
             <NewPuppyForm puppies={puppies} setPuppies={setPuppies} />
         </main>
-    );
-}
-
-function ErrorBox({ error }: { error: ApiError }) {
-    return (
-        <div className="mt-12 overflow-auto bg-red-100 p-6 shadow ring ring-black/5">
-            <p className="text-red-500">
-                {error.code}: {error.message}: {error.details}
-            </p>
-        </div>
     );
 }

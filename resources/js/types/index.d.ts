@@ -50,10 +50,3 @@ export interface Puppy {
     user: Pick<User, 'id' | 'name'>;
     likedBy: User['id'][];
 }
-
-export type ApiError = {
-    error: boolean;
-    message: string;
-    details: string;
-    code: string;
-};
