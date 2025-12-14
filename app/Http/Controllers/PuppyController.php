@@ -19,7 +19,7 @@ class PuppyController extends Controller
 
     public function like(Request $request, Puppy $puppy): RedirectResponse
     {
-        sleep(2); // Simulates latency
+        sleep(1); // Simulates latency
         $puppy->likedBy()->toggle($request->user()->id);
 
         return back();
