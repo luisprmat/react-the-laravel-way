@@ -1,16 +1,10 @@
 <?php
 
 use App\Http\Controllers\PuppyController;
-use App\Http\Resources\PuppyResource;
-use App\Models\Puppy;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('welcome', [
-        'puppies' => PuppyResource::collection(Puppy::with(['user', 'likedBy'])->get()),
-    ]);
-})->name('home');
+Route::get('/', [PuppyController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('puppies/{puppy}/like', [PuppyController::class, 'like'])
