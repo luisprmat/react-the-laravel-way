@@ -1,8 +1,9 @@
+import { usePage } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-internationalization';
 import { Heart, LoaderCircle, X } from 'lucide-react';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { toggleLikedStatus } from '../queries';
-import { Puppy } from '../types';
+import { Puppy, SharedData } from '../types';
 
 export function Shortlist({
   puppies,
@@ -12,6 +13,7 @@ export function Shortlist({
   setPuppies: Dispatch<SetStateAction<Puppy[]>>;
 }) {
   const { t } = useLaravelReactI18n();
+  const { auth } = usePage<SharedData>().props;
   return (
     <div>
       <h2 className="flex items-center gap-2 font-medium">
@@ -20,7 +22,7 @@ export function Shortlist({
       </h2>
       <ul className="mt-4 flex flex-wrap gap-4">
         {puppies
-          .filter((pup) => pup.likedBy.includes(1))
+          .filter((pup) => pup.likedBy.includes(auth.user?.id))
           .map((puppy) => (
             <li
               key={puppy.id}

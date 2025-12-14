@@ -50,3 +50,7 @@ export interface Puppy {
     user: Pick<User, 'id' | 'name'>;
     likedBy: User['id'][];
 }
+
+export type PuppyCardProps = {
+    puppy: Puppy;
+};

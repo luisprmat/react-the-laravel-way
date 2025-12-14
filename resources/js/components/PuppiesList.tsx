@@ -1,15 +1,12 @@
-import { Dispatch, SetStateAction } from 'react';
 import { type Puppy, type PuppyCardProps } from '../types';
 import { LikeToggle } from './LikeToggle';
 
 export function PuppiesList({
   searchQuery,
   puppies,
-  setPuppies,
 }: {
   searchQuery: string;
   puppies: Puppy[];
-  setPuppies: Dispatch<SetStateAction<Puppy[]>>;
 }) {
   return (
     <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -18,13 +15,13 @@ export function PuppiesList({
           pup.trait.toLowerCase().includes(searchQuery.toLowerCase()),
         )
         .map((puppy) => (
-          <PuppyCard key={puppy.id} puppy={puppy} setPuppies={setPuppies} />
+          <PuppyCard key={puppy.id} puppy={puppy} />
         ))}
     </ul>
   );
 }
 
-function PuppyCard({ puppy, setPuppies }: PuppyCardProps) {
+function PuppyCard({ puppy }: PuppyCardProps) {
   return (
     <li className="overflow-clip rounded-lg bg-white shadow-md ring ring-black/5 hover:-translate-y-0.5">
       <img
@@ -38,7 +35,7 @@ function PuppyCard({ puppy, setPuppies }: PuppyCardProps) {
           <span className="text-slate-300">·</span>
           <p className="text-slate-500">{puppy.trait}</p>
         </div>
-        <LikeToggle puppy={puppy} setPuppies={setPuppies} />
+        <LikeToggle puppy={puppy} />
       </div>
     </li>
   );
