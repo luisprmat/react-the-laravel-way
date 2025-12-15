@@ -54,3 +54,8 @@ export interface Puppy {
 export type PuppyCardProps = {
     puppy: Puppy;
 };
+
+export interface Filters {
+    search?: string;
+    [key: string]: unknown;
+}

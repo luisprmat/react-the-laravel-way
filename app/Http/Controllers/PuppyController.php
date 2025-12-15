@@ -4,16 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PuppyResource;
 use App\Models\Puppy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class PuppyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->search;
+
         return Inertia::render('puppies/index', [
-            'puppies' => PuppyResource::collection(Puppy::with(['user', 'likedBy'])->get()),
+            'puppies' => PuppyResource::collection(
+                Puppy::query()
+                    ->when($search, function (Builder $query, string $search) {
+                        $query->where('name', 'like', "%{$search}%")
+                            ->orWhere('trait', 'like', "%{$search}%");
+                    })
+                    ->with(['user', 'likedBy'])
+                    ->get()
+            ),
+            'filters' => [
+                'search' => $search,
+            ],
         ]);
     }
 

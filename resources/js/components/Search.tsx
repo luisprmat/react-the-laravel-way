@@ -1,14 +1,11 @@
+import { home } from '@/routes';
+import { Filters } from '@/types';
+import { router } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-internationalization';
 import { Delete } from 'lucide-react';
-import { Dispatch, SetStateAction, useRef } from 'react';
+import { useRef } from 'react';
 
-export function Search({
-  searchQuery,
-  setSearchQuery,
-}: {
-  searchQuery: string;
-  setSearchQuery: Dispatch<SetStateAction<string>>;
-}) {
+export function Search({ filters }: { filters: Filters }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const { t } = useLaravelReactI18n();
 
@@ -20,8 +17,14 @@ export function Search({
       <div className="mt-2 flex items-center gap-4">
         <input
           ref={inputRef}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          defaultValue={filters.search}
+          onChange={(e) => {
+            router.get(
+              home(),
+              { search: e.target.value },
+              { preserveState: true, preserveScroll: true },
+            );
+          }}
           placeholder={t('playful') + '...'}
           name="search"
           id="search"
@@ -30,10 +33,7 @@ export function Search({
         />
         <button
           onClick={() => {
-            setSearchQuery('');
-            if (inputRef.current !== null) {
-              inputRef.current.focus();
-            }
+            inputRef.current?.focus();
           }}
           className="inline-block rounded bg-cyan-300 px-4 py-2 !pr-3 !pl-2.5 font-medium text-cyan-900 hover:bg-cyan-200 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
         >
