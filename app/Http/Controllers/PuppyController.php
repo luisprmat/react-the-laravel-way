@@ -39,4 +39,9 @@ class PuppyController extends Controller
 
         return back();
     }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+    }
 }

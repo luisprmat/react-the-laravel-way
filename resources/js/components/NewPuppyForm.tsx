@@ -1,69 +1,66 @@
+import { store } from '@/routes/puppies';
+import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-internationalization';
-import { Dispatch, SetStateAction } from 'react';
 import { useFormStatus } from 'react-dom';
-import { ErrorBoundary } from 'react-error-boundary';
-import { createPuppy } from '../queries';
-import { Puppy } from '../types';
 
-export function NewPuppyForm({
-  puppies,
-  setPuppies,
-}: {
-  puppies: Puppy[];
-  setPuppies: Dispatch<SetStateAction<Puppy[]>>;
-}) {
+export function NewPuppyForm() {
+  const { post, setData, data } = useForm({
+    name: '',
+    trait: '',
+    image: null as File | null,
+  });
   const { t } = useLaravelReactI18n();
 
   return (
     <div className="mt-12 flex items-center justify-between bg-white p-8 shadow ring ring-black/5">
-      <ErrorBoundary
-        fallbackRender={({ error }) => (
-          <pre>{JSON.stringify(error, null, 2)}</pre>
-        )}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          post(store().url);
+        }}
+        className="mt-4 flex w-full flex-col items-start gap-4"
       >
-        <form
-          action={async (formData: FormData) => {
-            const response = await createPuppy(formData);
-            if (response.data) {
-              setPuppies([...puppies, response.data]);
-            }
-          }}
-          className="mt-4 flex w-full flex-col items-start gap-4"
-        >
-          <div className="grid w-full gap-6 md:grid-cols-3">
-            <fieldset className="flex w-full flex-col gap-1">
-              <label htmlFor="name">{t('Name')}</label>
-              <input
-                required
-                className="max-w-96 rounded-sm bg-white px-2 py-1 ring ring-black/20 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-                id="name"
-                type="text"
-                name="name"
-              />
-            </fieldset>
-            <fieldset className="flex w-full flex-col gap-1">
-              <label htmlFor="trait">{t('Personality trait')}</label>
-              <input
-                required
-                className="max-w-96 rounded-sm bg-white px-2 py-1 ring ring-black/20 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-                id="trait"
-                type="text"
-                name="trait"
-              />
-            </fieldset>
-            <fieldset className="col-span-2 flex w-full flex-col gap-1">
-              <label htmlFor="image_url">{t('Profile pic')}</label>
-              <input
-                className="max-w-96 rounded-sm bg-white px-2 py-1 ring ring-black/20 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-                id="image_url"
-                type="file"
-                name="image_url"
-              />
-            </fieldset>
-          </div>
-          <SubmitButton />
-        </form>
-      </ErrorBoundary>
+        <div className="grid w-full gap-6 md:grid-cols-3">
+          <fieldset className="flex w-full flex-col gap-1">
+            <label htmlFor="name">{t('Name')}</label>
+            <input
+              required
+              value={data.name}
+              className="max-w-96 rounded-sm bg-white px-2 py-1 ring ring-black/20 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+              id="name"
+              type="text"
+              name="name"
+              onChange={(e) => setData('name', e.target.value)}
+            />
+          </fieldset>
+          <fieldset className="flex w-full flex-col gap-1">
+            <label htmlFor="trait">{t('Personality trait')}</label>
+            <input
+              required
+              value={data.trait}
+              className="max-w-96 rounded-sm bg-white px-2 py-1 ring ring-black/20 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+              id="trait"
+              type="text"
+              name="trait"
+              onChange={(e) => setData('trait', e.target.value)}
+            />
+          </fieldset>
+          <fieldset className="col-span-2 flex w-full flex-col gap-1">
+            <label htmlFor="image">{t('Profile pic')}</label>
+            <input
+              required
+              className="max-w-96 rounded-sm bg-white px-2 py-1 ring ring-black/20 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+              id="image"
+              type="file"
+              name="image"
+              onChange={(e) =>
+                setData('image', e.target.files ? e.target.files[0] : null)
+              }
+            />
+          </fieldset>
+        </div>
+        <SubmitButton />
+      </form>
     </div>
   );
 }
