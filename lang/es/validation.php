@@ -273,6 +273,7 @@ return [
         'text' => 'texto',
         'time' => 'hora',
         'title' => 'título',
+        'trait' => 'rasgo',
         'type' => 'tipo',
         'updated_at' => 'actualizado el',
         'user' => 'usuario',
