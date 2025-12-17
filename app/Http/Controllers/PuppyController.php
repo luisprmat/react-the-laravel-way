@@ -23,6 +23,7 @@ class PuppyController extends Controller
                             ->orWhere('trait', 'like', "%{$search}%");
                     })
                     ->with(['user', 'likedBy'])
+                    ->latest()
                     ->paginate(9)
                     ->withQueryString()
             ),
@@ -34,7 +35,7 @@ class PuppyController extends Controller
 
     public function like(Request $request, Puppy $puppy): RedirectResponse
     {
-        sleep(1); // Simulates latency
+        // sleep(1); // Simulates latency
         $puppy->likedBy()->toggle($request->user()->id);
 
         return back();
@@ -42,6 +43,7 @@ class PuppyController extends Controller
 
     public function store(Request $request)
     {
+        sleep(2); // Simulates latency
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'trait' => ['required', 'string', 'max:255'],
@@ -58,6 +60,12 @@ class PuppyController extends Controller
             $image_url = $path;
         }
 
-        dd($image_url);
+        $request->user()->puppies()->create([
+            'name' => $request->name,
+            'trait' => $request->trait,
+            'image_url' => $image_url,
+        ]);
+
+        return back()->with('success', __('Puppy created successfully!'));
     }
 }

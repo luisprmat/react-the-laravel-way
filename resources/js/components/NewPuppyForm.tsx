@@ -1,8 +1,13 @@
 import { store } from '@/actions/App/Http/Controllers/PuppyController';
 import { Form } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-internationalization';
+import React from 'react';
 
-export function NewPuppyForm() {
+export function NewPuppyForm({
+  mainRef,
+}: {
+  mainRef?: React.RefObject<HTMLElement>;
+}) {
   const { t } = useLaravelReactI18n();
 
   return (
@@ -11,6 +16,15 @@ export function NewPuppyForm() {
         {...store.form()}
         className="mt-4 flex w-full flex-col items-start gap-4"
         options={{ preserveScroll: true }}
+        resetOnSuccess
+        onSuccess={() => {
+          if (mainRef?.current) {
+            mainRef.current.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            });
+          }
+        }}
       >
         {({ processing, getFormData, errors }) => (
           <>

@@ -8,6 +8,7 @@ import { Shortlist } from '@/components/ShortList';
 
 import { Filters, PaginatedResponse, Puppy, SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
+import { useRef } from 'react';
 
 export default function App({
   puppies,
@@ -34,15 +35,16 @@ function Main({
   filters: Filters;
 }) {
   const { auth } = usePage<SharedData>().props;
+  const mainRef = useRef<HTMLElement>(null);
 
   return (
-    <main>
+    <main ref={mainRef} className="scroll-mt-6">
       <div className="mt-24 grid gap-8 sm:grid-cols-2">
         <Search filters={filters} />
         {auth.user && <Shortlist puppies={paginatedPuppies.data} />}
       </div>
       <PuppiesList puppies={paginatedPuppies} />
-      {auth.user && <NewPuppyForm />}
+      {auth.user && <NewPuppyForm mainRef={mainRef} />}
     </main>
   );
 }
