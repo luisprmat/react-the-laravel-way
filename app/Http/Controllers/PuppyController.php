@@ -29,6 +29,9 @@ class PuppyController extends Controller
                     ->paginate(9)
                     ->withQueryString()
             ),
+            'likedPuppies' => $request->user()
+                ? PuppyResource::collection($request->user()->likedPuppies)
+                : [],
             'filters' => [
                 'search' => $search,
             ],
@@ -37,7 +40,7 @@ class PuppyController extends Controller
 
     public function like(Request $request, Puppy $puppy): RedirectResponse
     {
-        // sleep(1); // Simulates latency
+        usleep(200_000); // Simulates latency
         $puppy->likedBy()->toggle($request->user()->id);
 
         return back();
@@ -45,7 +48,7 @@ class PuppyController extends Controller
 
     public function store(Request $request)
     {
-        sleep(2); // Simulates latency
+        usleep(200_000); // Simulates latency
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'trait' => ['required', 'string', 'max:255'],
