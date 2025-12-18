@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\OptimizeWebpImageAction;
 use App\Http\Resources\PuppyResource;
 use App\Models\Puppy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Intervention\Image\Laravel\Facades\Image;
 
 class PuppyController extends Controller
 {
@@ -56,23 +55,13 @@ class PuppyController extends Controller
         $image_url = null;
 
         if ($request->hasFile('image')) {
-            // Image optimization
-            $image = Image::read($request->file('image'));
+            $optimized = new OptimizeWebpImageAction()->handle($request->file('image'));
 
-            // Scale down only
-            if ($image->width() > 1000) {
-                $image->scale(width: 1000);
-            }
-
-            $webpEncoded = $image->toWebp(quality: 95)->toString();
-
-            $fileName = Str::random().'.webp';
-
-            $path = 'puppies/'.$fileName;
+            $path = 'puppies/'.$optimized['fileName'];
 
             $stored = config('filesystems.default') === 's3'
-                ? Storage::put($path, $webpEncoded, 'public')
-                : Storage::disk('public')->put($path, $webpEncoded);
+                ? Storage::put($path, $optimized['webpString'], 'public')
+                : Storage::disk('public')->put($path, $optimized['webpString']);
 
             if (! $stored) {
                 return back()->withErrors(['image' => __('Failed to upload image.')]);

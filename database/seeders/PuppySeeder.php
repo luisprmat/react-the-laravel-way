@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Actions\OptimizeWebpImageAction;
 use App\Models\Puppy;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 
 class PuppySeeder extends Seeder
@@ -129,13 +129,22 @@ class PuppySeeder extends Seeder
 
         $user = User::first();
 
+        $optimizer = new OptimizeWebpImageAction;
+
         foreach ($puppies as $puppy) {
-            $imagePath = Storage::disk('public')->putFile('puppies', new File(storage_path("app/seeders/images/{$puppy['image']}")), 'public');
+            $input = storage_path("app/seeders/images/{$puppy['image']}");
+            $optimized = $optimizer->handle($input);
+            $path = 'puppies/'.$optimized['fileName'];
+
+            $stored = config('filesystems.default') === 's3'
+                ? Storage::put($path, $optimized['webpString'], 'public')
+                : Storage::disk('public')->put($path, $optimized['webpString']);
+
             Puppy::create([
                 'user_id' => $user->id,
                 'name' => $puppy['name'],
                 'trait' => $puppy['trait'],
-                'image_url' => $imagePath,
+                'image_url' => $stored ? $path : null,
             ]);
         }
     }
