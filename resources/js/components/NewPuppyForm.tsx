@@ -1,12 +1,11 @@
 import { store } from '@/actions/App/Http/Controllers/PuppyController';
 import { Form } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-internationalization';
-import React from 'react';
 
 export function NewPuppyForm({
   mainRef,
 }: {
-  mainRef?: React.RefObject<HTMLElement>;
+  mainRef?: React.RefObject<HTMLElement | null>;
 }) {
   const { t } = useLaravelReactI18n();
 
