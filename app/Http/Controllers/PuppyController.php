@@ -78,6 +78,6 @@ class PuppyController extends Controller
             'image_url' => $image_url,
         ]);
 
-        return back()->with('success', __('Puppy created successfully!'));
+        return to_route('home', ['page' => 1])->with('success', __('Puppy created successfully!'));
     }
 }
