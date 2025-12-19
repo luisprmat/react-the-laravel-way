@@ -9,7 +9,8 @@ class AppPlugin extends Plugin
     public function files(): array
     {
         return [
-            '../../../../lang_source/app.json' => '{locale}.json',
+            // path from $base_path/source for PluginManager
+            'app.json' => '{locale}.json',
         ];
     }
 }

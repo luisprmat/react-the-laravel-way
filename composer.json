@@ -24,6 +24,7 @@
         "laravel-lang/lang": "^15.26",
         "laravel-lang/publisher": "^16.7",
         "laravel-lang/starter-kits": "^1.6",
+        "laravel-lang/status-generator": "^2.13",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.24",
         "laravel/sail": "^1.41",
