@@ -1,7 +1,6 @@
 import { destroy } from '@/actions/App/Http/Controllers/PuppyController';
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -13,15 +12,18 @@ import {
 import { Button } from '@/components/ui/button';
 import { Puppy } from '@/types';
 import { Form } from '@inertiajs/react';
+import clsx from 'clsx';
 import { useLaravelReactI18n } from 'laravel-react-internationalization';
-import { TrashIcon } from 'lucide-react';
+import { LoaderCircle, TrashIcon } from 'lucide-react';
+import { useState } from 'react';
 
 export function PuppyDelete({ puppy }: { puppy: Puppy }) {
   const { t } = useLaravelReactI18n();
+  const [open, setOpen] = useState(false);
 
   return (
     <div>
-      <AlertDialog>
+      <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogTrigger asChild>
           <Button
             className="group/delete bg-background/50 hover:bg-background"
@@ -45,9 +47,20 @@ export function PuppyDelete({ puppy }: { puppy: Puppy }) {
             {({ processing }) => (
               <AlertDialogFooter>
                 <AlertDialogCancel>{t('Cancel')}</AlertDialogCancel>
-                <AlertDialogAction type="submit">
-                  {t('Delete to :name', { name: puppy.name })}
-                </AlertDialogAction>
+                <Button
+                  className="relative disabled:opacity-100"
+                  disabled={processing}
+                  type="submit"
+                >
+                  {processing && (
+                    <div className="absolute inset-0 grid place-items-center">
+                      <LoaderCircle className="size-5 animate-spin stroke-primary-foreground" />
+                    </div>
+                  )}
+                  <span className={clsx(processing && 'invisible')}>
+                    {t('Delete to :name', { name: puppy.name })}
+                  </span>
+                </Button>
               </AlertDialogFooter>
             )}
           </Form>

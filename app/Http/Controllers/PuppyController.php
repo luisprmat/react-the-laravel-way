@@ -83,6 +83,7 @@ class PuppyController extends Controller
 
     public function destroy(Request $request, Puppy $puppy)
     {
+        sleep(2); // Simulates latency
         $imagePath = $puppy->image_url;
 
         if ($request->user()->cannot('delete', $puppy)) {
