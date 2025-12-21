@@ -80,4 +80,18 @@ class PuppyController extends Controller
 
         return to_route('home', ['page' => 1])->with('success', __('Puppy created successfully!'));
     }
+
+    public function destroy(Request $request, Puppy $puppy)
+    {
+        $imagePath = $puppy->image_url;
+
+        $puppy->delete();
+
+        if ($imagePath && Storage::disk('public')->exists($imagePath)) {
+            Storage::disk('public')->delete($imagePath);
+        }
+
+        return to_route('home', ['page' => 1])
+            ->with('success', __('Puppy deleted successfully!'));
+    }
 }

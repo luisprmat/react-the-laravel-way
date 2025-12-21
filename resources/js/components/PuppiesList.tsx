@@ -1,6 +1,7 @@
 import { PaginatedResponse, type Puppy, type PuppyCardProps } from '../types';
 import { LikeToggle } from './LikeToggle';
 import { Pagination } from './pagination';
+import { PuppyDelete } from './puppy-delete';
 
 export function PuppiesList({
   puppies,
@@ -21,7 +22,10 @@ export function PuppiesList({
 
 function PuppyCard({ puppy }: PuppyCardProps) {
   return (
-    <li className="overflow-clip rounded-lg bg-white shadow-md ring ring-black/5 hover:-translate-y-0.5">
+    <li className="relative overflow-clip rounded-lg bg-white shadow-md ring ring-black/5 hover:-translate-y-0.5">
+      <div className="absolute top-2 right-2">
+        <PuppyDelete puppy={puppy} />
+      </div>
       <img
         className="aspect-square object-cover"
         alt={puppy.name}

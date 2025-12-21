@@ -1,6 +1,8 @@
 {
     "Add :name": "Agregar :name",
     "Adding": "Añadiendo",
+    "Are you absolutely sure?": "¿Estás completamente seguro?",
+    "Delete to :name": "Borrar a :name",
     "Don't take our word — let the pictures do the talking :)": "No confíe en nuestras palabras — deje que las imágenes hablen por sí mismas :)",
     "Failed to upload image.": "Error al cargar la imagen.",
     "Hi, :name": "Hey, :name",
@@ -14,8 +16,10 @@
     "Profile pic": "Foto de perfil",
     "puppy": "cachorro",
     "Puppy created successfully!": "¡Cachorro creado con éxito!",
+    "Puppy deleted successfully!": "¡Cachorro eliminado con éxito!",
     "Search for a character trait": "Buscar por rasgo de carácter",
     "to keep track of your favorite puppies and add new ones!": "para hacer seguimiento de tus cachorros favoritos y agregar nuevos!",
     "We've got the best puppies!": "¡Tenemos los mejores cachorros!",
+    "Who in their right mind would delete such a cute puppy? Seriously?": "¿Quién en su sano juicio eliminaría a un cachorrito tan lindo? ¿En serio?",
     "Your shortlist": "Su lista corta"
 }
