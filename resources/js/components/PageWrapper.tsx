@@ -4,8 +4,13 @@ import { usePage } from '@inertiajs/react';
 import { toast } from 'sonner';
 
 export function PageWrapper({ children }: { children: React.ReactNode }) {
-  const { flash } = usePage<SharedData>().props;
+  const { flash, errors } = usePage<SharedData>().props;
   if (flash.success) toast.success(flash.success);
+  if (errors) {
+    Object.values(errors).forEach((error) => {
+      toast.error(error);
+    });
+  }
   return (
     <>
       <div className="min-h-dvh bg-linear-to-b from-cyan-200 to-white to-[60vh]">

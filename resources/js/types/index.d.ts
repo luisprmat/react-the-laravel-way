@@ -52,6 +52,9 @@ export interface Puppy {
     imageUrl: string;
     user: Pick<User, 'id' | 'name'>;
     likedBy: User['id'][];
+    can: {
+        delete: boolean;
+    };
 }
 
 export type PuppyCardProps = {

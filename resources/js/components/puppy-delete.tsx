@@ -24,11 +24,12 @@ export function PuppyDelete({ puppy }: { puppy: Puppy }) {
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button
+            className="group/delete bg-background/50 hover:bg-background"
             size="icon"
-            variant="destructive"
+            variant="secondary"
             aria-label={t('Delete :name', { name: t('puppy') })}
           >
-            <TrashIcon className="size-4" />
+            <TrashIcon className="size-4 group-hover/delete:stroke-destructive" />
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>

@@ -85,6 +85,11 @@ class PuppyController extends Controller
     {
         $imagePath = $puppy->image_url;
 
+        if ($request->user()->cannot('delete', $puppy)) {
+            return back()
+                ->withErrors(['error' => __('You do not have permission to delete this puppy.')]);
+        }
+
         $puppy->delete();
 
         if ($imagePath && Storage::disk('public')->exists($imagePath)) {
