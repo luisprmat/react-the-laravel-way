@@ -40,7 +40,6 @@ class PuppyController extends Controller
 
     public function like(Request $request, Puppy $puppy): RedirectResponse
     {
-        usleep(200_000); // Simulates latency
         $puppy->likedBy()->toggle($request->user()->id);
 
         return back();
@@ -48,7 +47,6 @@ class PuppyController extends Controller
 
     public function store(Request $request)
     {
-        usleep(200_000); // Simulates latency
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'trait' => ['required', 'string', 'max:255'],
@@ -82,7 +80,6 @@ class PuppyController extends Controller
 
     public function update(Request $request, Puppy $puppy)
     {
-        sleep(2); // Simulates latency
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'trait' => ['required', 'string', 'max:255'],
@@ -120,7 +117,6 @@ class PuppyController extends Controller
 
     public function destroy(Request $request, Puppy $puppy)
     {
-        sleep(2); // Simulates latency
         $imagePath = $puppy->image_url;
 
         if ($request->user()->cannot('delete', $puppy)) {

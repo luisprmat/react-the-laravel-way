@@ -1,6 +1,8 @@
 import { store } from '@/actions/App/Http/Controllers/PuppyController';
 import { Form } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-internationalization';
+import { useState } from 'react';
+import { ImageUploadPreview } from './ImageUploadPreview';
 
 export function NewPuppyForm({
   mainRef,
@@ -8,6 +10,7 @@ export function NewPuppyForm({
   mainRef?: React.RefObject<HTMLElement | null>;
 }) {
   const { t } = useLaravelReactI18n();
+  const [image, setImage] = useState<File | null>(null);
 
   return (
     <div className="mt-12 flex items-center justify-between bg-white p-8 shadow ring ring-black/5">
@@ -17,6 +20,7 @@ export function NewPuppyForm({
         options={{ preserveScroll: true }}
         resetOnSuccess
         onSuccess={() => {
+          setImage(null);
           if (mainRef?.current) {
             mainRef.current.scrollIntoView({
               behavior: 'smooth',
@@ -59,10 +63,19 @@ export function NewPuppyForm({
                   id="image"
                   type="file"
                   name="image"
+                  onChange={(e) =>
+                    setImage(e.target.files ? e.target.files[0] : null)
+                  }
                 />
                 {errors.image && (
                   <p className="mt-1 text-xs text-red-500">{errors.image}</p>
                 )}
+                <ImageUploadPreview
+                  height={96}
+                  alt={t('Image preview')}
+                  className="self-start"
+                  source={image}
+                />
               </fieldset>
             </div>
             <button

@@ -1,4 +1,5 @@
 import { update } from '@/actions/App/Http/Controllers/PuppyController';
+import { ImageUploadPreview } from '@/components/ImageUploadPreview';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -20,11 +21,18 @@ import { Label } from './ui/label';
 
 export function PuppyUpdate({ puppy }: { puppy: Puppy }) {
   const { t } = useLaravelReactI18n();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [image, setImage] = useState<File | null>(null);
 
   return (
     <div>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog
+        open={open}
+        onOpenChange={(open) => {
+          setOpen(open);
+          setImage(null);
+        }}
+      >
         <DialogTrigger asChild>
           <Button
             className="group/update bg-background/50 hover:bg-background"
@@ -38,7 +46,7 @@ export function PuppyUpdate({ puppy }: { puppy: Puppy }) {
         <DialogContent>
           <DialogTitle>{t('Edit :name', { name: puppy.name })}</DialogTitle>
           <DialogDescription>
-            {t('Make changes to your puppy’s information below.')}
+            {t("Make changes to your puppy's information below.")}
           </DialogDescription>
           <Form
             {...update.form(puppy)}
@@ -89,10 +97,18 @@ export function PuppyUpdate({ puppy }: { puppy: Puppy }) {
                     type="file"
                     name="image"
                     placeholder={t('Profile pic')}
+                    onChange={(e) =>
+                      setImage(e.target.files ? e.target.files[0] : null)
+                    }
                   />
                   {errors.image && (
                     <p className="mt-1 text-xs text-red-500">{errors.image}</p>
                   )}
+
+                  <ImageUploadPreview
+                    source={image ?? puppy.imageUrl}
+                    alt={image ? t('Image preview') : puppy.name}
+                  />
                 </fieldset>
 
                 <DialogFooter className="gap-2">
