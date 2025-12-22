@@ -81,6 +81,11 @@ class PuppyController extends Controller
         return to_route('home', ['page' => 1])->with('success', __('Puppy created successfully!'));
     }
 
+    public function update(Request $request, Puppy $puppy)
+    {
+        dd('Hello from update method!');
+    }
+
     public function destroy(Request $request, Puppy $puppy)
     {
         sleep(2); // Simulates latency
