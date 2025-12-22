@@ -59,7 +59,6 @@ class PuppyController extends Controller
 
         if ($request->hasFile('image')) {
             $optimized = new OptimizeWebpImageAction()->handle($request->file('image'));
-
             $path = 'puppies/'.$optimized['fileName'];
 
             $stored = config('filesystems.default') === 's3'
@@ -83,7 +82,40 @@ class PuppyController extends Controller
 
     public function update(Request $request, Puppy $puppy)
     {
-        dd('Hello from update method!');
+        sleep(2); // Simulates latency
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'trait' => ['required', 'string', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:5120'],
+        ]);
+
+        if ($request->hasFile('image')) {
+            $oldImagePath = $puppy->image_url;
+
+            $optimized = new OptimizeWebpImageAction()->handle($request->file('image'));
+            $path = 'puppies/'.$optimized['fileName'];
+
+            $stored = config('filesystems.default') === 's3'
+                ? Storage::put($path, $optimized['webpString'], 'public')
+                : Storage::disk('public')->put($path, $optimized['webpString']);
+
+            if (! $stored) {
+                return back()->withErrors(['image' => __('Failed to upload image.')]);
+            }
+
+            $puppy->image_url = $path;
+
+            if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
+                Storage::disk('public')->delete($oldImagePath);
+            }
+        }
+
+        $puppy->name = $request->name;
+        $puppy->trait = $request->trait;
+
+        $puppy->save();
+
+        return back()->with('success', __('Puppy updated successfully!'));
     }
 
     public function destroy(Request $request, Puppy $puppy)

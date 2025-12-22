@@ -40,7 +40,12 @@ export function PuppyUpdate({ puppy }: { puppy: Puppy }) {
           <DialogDescription>
             {t('Make changes to your puppy’s information below.')}
           </DialogDescription>
-          <Form {...update.form(puppy)} className="space-y-6">
+          <Form
+            {...update.form(puppy)}
+            className="space-y-6"
+            options={{ preserveScroll: true }}
+            onSuccess={() => setOpen(false)}
+          >
             {({ processing, errors }) => (
               <>
                 <fieldset>
